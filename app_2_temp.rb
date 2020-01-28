@@ -22,49 +22,75 @@ def welcome_message
 
 end
 
-def define_user_name
+def choose_player_name
   print "Choisi un pseudo : "
   player_name = gets.chomp.to_s
-  player = HumanPlayer.new(player_name)
-  puts "Welcome #{player.name}, c'est parti pour le combat !"
-  return player
+  return player_name
 end
 
+def set_player_name(player_name)
+  @player = HumanPlayer.new(player_name)
+  puts "Welcome #{@player.name}, c'est parti pour le combat !"
+  return @player
+end
 
-# def ennemies_array
-#   ennemies = []
-#   fighter1 = Player.new("Josiane")
-#   puts "Fighter : #{fighter1.name} prête à combattre !"
-#   ennemies << fighter1
-#   fighter2 = Player.new("José")
-#   puts "Fighter : #{fighter2.name} prêt à combattre !"
-#   ennemies << fighter2
-#   return fighter1
-#   return fighter2
-#   return ennemies
-# end
+def create_ennemies
+  @fighter1 = Player.new("Josiane")
+  puts "#{@fighter1.name} créé"
+  @fighter2 = Player.new("José")
+  puts "#{@fighter2.name} créé"
+  ennemies = [@fighter1, @fighter2]
+  return ennemies
+end
 
+def display_menu
+  puts "Quelle action veux-tu effectuer ?"
+  puts "a - chercher une meilleure arme"
+  puts "s - chercher à se soigner"
+  puts "\n\n"
+  puts "Attaquer un joueur en vue :"
+  print "0 - "
+  @fighter1.show_state
+  print "1 - "
+  @fighter2.show_state
+  user_choice
+end
 
-# def player_action_menu(fighter2,fighter1)
-#   puts "Quelle action veux-tu effectuer ?"
-#   puts "a - chercher une meilleure arme"
-#   puts "s - chercher à se soigner"
-#   puts "\n\n"
-#   puts "Attaquer un joueur en vue :"
-#   print "0 - "
-#   fighter1.show_state
-#   print "1 - "
-#   fighter2.show_state
-#   print ">>> "
-#   selected_menu = gets.chomp
-#   return selected_menu
-# end
+def user_choice
+  print ">>> "
+  selected_menu = gets.chomp
+  menu_response(selected_menu)
+  return selected_menu
+end
+
+def menu_response(selected_menu)
+  if selected_menu == "a"
+    puts "tu as choisis a"
+
+  elsif selected_menu == "s"
+    puts "tu as choisis s"
+  elsif selected_menu == "0"
+    puts "tu as choisis 0"
+  elsif selected_menu == "1"
+    puts "tu as choisis 1"
+  else
+    puts "Merci de choisir un choix du menu"
+    user_choice
+  end
+end
 
 def win_or_lose
   if player > 0
     return win
   else 
     return lose
+  end
+end
+
+def fight
+  while (@player.life_points > 0) && (@fighter1.life_points > 0 || @fighter2.life_points > 0)
+    puts "#{@player.show_state}"
+    display_menu
   end
 end
 
@@ -75,39 +101,7 @@ def lose
   puts "Tu as perdu !"
 end
 
-
-
-welcome_message
-define_user_name
-
-  ennemies = []
-  fighter1 = Player.new("Josiane")
-  puts "Fighter : #{fighter1.name} prête à combattre !"
-  ennemies << fighter1
-  fighter2 = Player.new("José")
-  puts "Fighter : #{fighter2.name} prêt à combattre !"
-  ennemies << fighter2
-  puts "Quelle action veux-tu effectuer ?"
-  puts "a - chercher une meilleure arme"
-  puts "s - chercher à se soigner"
-  puts "\n\n"
-  puts "Attaquer un joueur en vue :"
-  print "0 - "
-  fighter1.show_state
-  print "1 - "
-  fighter2.show_state
-  print ">>> "
-  selected_menu = gets.chomp
-  return selected_menu
-# ennemies_array
-# binding.pry
-# player_action_menu(fighter1,fighter2)
-
-
-while (player.life_points > 0) && (fighter1.life_points > 0 || fighter2.life_points > 0)
-  puts "#{player.show_state}"
-
-# code à venir :p
-
-end
-
+welcome_message  
+player_name = choose_player_name
+player = set_player_name(player_name)
+ennemies = create_ennemies
