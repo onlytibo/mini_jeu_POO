@@ -31,7 +31,9 @@ class HumanPlayer < Player
     heal_pack_level = rand(1..6)
     if heal_pack_level == 1
       puts "Tu n'as rien trouvé"
+    
     elsif heal_pack_level >= 2 && heal_pack_level <= 5
+    
       if @life_points + 50 > 100 && @life_points != 100
         @life_points = 100
         puts "Tu as trouvé +50pv ! Tu as now #{@life_points}pv"
@@ -41,7 +43,9 @@ class HumanPlayer < Player
         @life_points = @life_points + 50
         puts "Tu as trouvé +50pv ! Tu as now #{@life_points}pv"
       end
+
     else @life_points == 6
+      
       if @life_points + 80 > 100 && @life_points != 100
         @life_points = 100
         puts "Tu as trouvé +80pv ! Tu as now #{@life_points}pv"
@@ -49,8 +53,8 @@ class HumanPlayer < Player
         puts "Tu as trouvé +80pv, mais tu as déjà le max de points de vie !"
       else
         @life_points = @life_points + 80
+        puts "Woaw, +80pv ! Tu as now #{@life_points}pv"      
       end
-      puts "Woaw, +80pv ! Tu as now #{@life_points}pv"      
     end
   end
 
