@@ -12,82 +12,64 @@ require_relative 'lib/game'
 require_relative 'lib/player'
 require_relative 'lib/human_player'
 
+puts "-------------------------------------------------"
+puts "|Bienvenue sur 'ILS VEULENT TOUS MA POO' !      |"
+puts "|Le but du jeu est d'être le dernier survivant !|"
+puts "-------------------------------------------------"
 
-def welcome_message
+print "Choisi un pseudo : "
+player = HumanPlayer.new(gets.chomp.to_s)
+puts "Welcome #{player.name}, c'est parti pour le combat !"
 
-  puts "-------------------------------------------------"
-  puts "|Bienvenue sur 'ILS VEULENT TOUS MA POO' !      |"
-  puts "|Le but du jeu est d'être le dernier survivant !|"
-  puts "-------------------------------------------------"
+ennemies = ["Josiane", "José"].map do |name|
+  p = Player.new(name)
+  puts "#{name} crée"
 
+  p
 end
 
-def define_user_name
-  print "Choisi un pseudo : "
-  player_name = gets.chomp.to_s
-  player = HumanPlayer.new(player_name)
-  puts "Welcome #{player.name}, c'est parti pour le combat !"
-  return player
-end
+while player.is_alive? && ennemies.find { |e| e.is_alive? } != nil
+  puts "#{player.show_state}"
 
-
-def ennemies_array
-  ennemies = []
-  fighter1 = Player.new("Josiane")
-  puts "Fighter : #{fighter1.name} prête à combattre !"
-  ennemies << fighter1
-  fighter2 = Player.new("José")
-  puts "Fighter : #{fighter2.name} prêt à combattre !"
-  ennemies << fighter2
-  return fighter1
-  return fighter2
-  return ennemies
-end
-
-
-def player_action_menu(fighter2,fighter1)
   puts "Quelle action veux-tu effectuer ?"
   puts "a - chercher une meilleure arme"
   puts "s - chercher à se soigner"
   puts "\n\n"
   puts "Attaquer un joueur en vue :"
-  print "0 - "
-  fighter1.show_state
-  print "1 - "
-  fighter2.show_state
-  print ">>> "
-  selected_menu = gets.chomp
-  return selected_menu
-end
 
-def win_or_lose
-  if player > 0
-    return win
-  else 
-    return lose
+  # ennemies.select { |e| e.is_alive? } => ennemies alive
+  #
+  alive_ennemies = ennemies.select(&:is_alive?)
+
+  ennemies.select(&:is_alive?).each_with_index do |e, i|
+    print "#{i} - "
+    e.show_state
   end
+
+  print ">>> "
+  choice = gets.chomp
+
+  case choice
+  when 'a'
+    player.search_weapon
+  when 's'
+    player.search_health_pack
+  else
+    if choice == "0" || choice.to_i > 0
+      e = alive_ennemies[choice.to_i]
+      player.attacks(e)
+    else
+      puts "Merci de choisir un choix du menu"
+
+      next # stop the loop and restart from the beginning
+    end
+  end
+
+  alive_ennemies.select(&:is_alive?).each { |e| e.attacks(player) }
 end
 
-def win
+if player.is_alive?
   puts "GG TU AS GAGNE !"
+else
+  puts "LOOOOOOOOOOOOOOSER !"
 end
-def lose
-  puts "Tu as perdu !"
-end
-
-
-
-welcome_message
-define_user_name
-ennemies_array
-binding.pry
-player_action_menu(fighter1,fighter2)
-
-
-while (player.life_points > 0) && (fighter1.life_points > 0 || fighter2.life_points > 0)
-  puts "#{player.show_state}"
-
-# code à venir :p
-
-end
-

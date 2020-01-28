@@ -7,22 +7,21 @@ class Player
   end
 
   def show_state
-    if @life_points > 1
-      puts "#{@name} à #{@life_points} points de vie"
-    else
-      puts "#{@name} à #{@life_points} point de vie"
-    end
+    puts "#{@name} à #{@life_points} point#{@life_points > 1 ? "s" : ""} de vie"
+  end
+
+  def is_alive?
+    @life_points > 0
   end
 
   def gets_damage(damage)
-    @life_points = @life_points - damage.to_i
+    @life_points -= damage.to_i
     
-    if @life_points <= 0
+    if !is_alive?
       puts "Le joueur #{@name} subit #{damage} points de dommage. Il est mort :)"
     else
       puts "Le joueur #{@name} subit #{damage} points de dommage."
     end
-
   end
 
   def attacks(player_to_attack)

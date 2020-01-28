@@ -3,12 +3,11 @@ class HumanPlayer < Player
 
   def initialize(name, weapon_level=1, life_points=100)
     @weapon_level = weapon_level.to_i
-  super(name, life_points)
+    super(name, life_points)
   end
 
   def show_state
     puts "#{@name} à #{life_points} points de vie et une arme de niveau #{weapon_level} !"
-  
   end
 
   def compute_damage
@@ -23,17 +22,19 @@ class HumanPlayer < Player
       @weapon_level = weapon_found_level
       puts "L'arme vient d'être équipé !"
     else
-      puts "M@*#$... elle n'est pas mieux que ton arme actuelle..."
+      puts "M@*\#$... elle n'est pas mieux que ton arme actuelle..."
     end
   end
 
   def search_health_pack
     heal_pack_level = rand(1..6)
+
     if heal_pack_level == 1
       puts "Tu n'as rien trouvé"
     
     elsif heal_pack_level >= 2 && heal_pack_level <= 5
-    
+      # @life_points = [@life_points + 50, 100].min
+
       if @life_points + 50 > 100 && @life_points != 100
         @life_points = 100
         puts "Tu as trouvé +50pv ! Tu as now #{@life_points}pv"
@@ -57,5 +58,4 @@ class HumanPlayer < Player
       end
     end
   end
-
 end
